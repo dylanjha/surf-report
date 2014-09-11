@@ -13,8 +13,17 @@ class ViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func fetchImages(tag: String!){
+        let instagramURLString = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=6ad531cd5fdc4b1aa78df742986bbef9"
         let manager = AFHTTPRequestOperationManager()
-        manager.GET("https://api.instagram.com/v1/tags/SurferPhotos/media/recent?client_id=6ad531cd5fdc4b1aa78df742986bbef9",
+        manager.GET( instagramURLString,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) in
                 if let data = responseObject.valueForKey("data") as? [AnyObject] {
@@ -34,11 +43,15 @@ class ViewController: UIViewController, UISearchBarDelegate {
                 println("JSON: " + error.localizedDescription)
             }
         )
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar!){
+        for subview in self.scrollView.subviews {
+            subview.removeFromSuperview()
+        }
+        searchBar.resignFirstResponder()
+        fetchImages(searchBar.text)
     }
 
 
