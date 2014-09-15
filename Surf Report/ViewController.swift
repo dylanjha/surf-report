@@ -30,10 +30,11 @@ class ViewController: UIViewController, UISearchBarDelegate {
                     for var i = 0; i < data.count; i++ {
                         let dataObj: AnyObject = data[i]
                         if let imageURLString = dataObj.valueForKeyPath("images.standard_resolution.url") as? String {
-                            let imageData = NSData(contentsOfURL: NSURL(string: imageURLString))
-                            let imageView = UIImageView(image: UIImage(data: imageData))
-                            imageView.frame = CGRectMake(0, CGFloat(320*i), 320, 320)
+                            println("image " + String(i) + " URL is " + imageURLString)
+                            
+                            let imageView = UIImageView(frame: CGRectMake(0, CGFloat(320*i), 320, 320))
                             self.scrollView.addSubview(imageView)
+                            imageView.setImageWithURL( NSURL(string: imageURLString))
                         }
                         
                     }
